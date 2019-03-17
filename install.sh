@@ -14,7 +14,7 @@ echo "start setup..."
 for f in .??*; do
     [ "$f" = ".git" ] && continue
     [ "$f" = ".gitignore" ] && continue
-    [ "$f" = ".gitconfig.local.template" ] && continue
+    # [ "$f" = ".gitconfig.local.template" ] && continue
     # [ "$f" = ".require_oh-my-zsh" ] && continue
     [ "$f" = ".gitmodules" ] && continue
 
@@ -31,13 +31,22 @@ done
 #   cask install
 # fi
 
-cd ~/dotfiles_installer/.prezto/runcoms/
+# cd ~/dotfiles_installer/.zprezto/runcoms/
 
-for f in *; do
-    [ "$f" = "README.md" ] && continue
+# setopt EXTENDED_GLOB
 
-    ln -s "$f" ~/."$f"
+MY_DIR = "/Users/massu1221/dotfiles"
+
+setopt EXTENDED_GLOB
+for rcfile in "${MY_DIR}"/.zprezto/runcoms/^README.md(.N); do
+  ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
 done
+
+# for f in *; do
+#     [ "$f" = "README.md" ] && continue
+
+#     ln -s "$f" ~/."$f"
+# done
 
 cat << END
 
