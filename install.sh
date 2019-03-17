@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/local/bin/zsh
 
 set -u
 
@@ -31,22 +31,10 @@ done
 #   cask install
 # fi
 
-# cd ~/dotfiles_installer/.zprezto/runcoms/
-
-# setopt EXTENDED_GLOB
-
-MY_DIR = "/Users/massu1221/dotfiles"
-
 setopt EXTENDED_GLOB
-for rcfile in "${MY_DIR}"/.zprezto/runcoms/^README.md(.N); do
-  ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
+for rcfile in ~/dotfiles/.zprezto/runcoms/^README.md(.N); do
+    ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
 done
-
-# for f in *; do
-#     [ "$f" = "README.md" ] && continue
-
-#     ln -s "$f" ~/."$f"
-# done
 
 cat << END
 
