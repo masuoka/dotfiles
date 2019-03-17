@@ -10,6 +10,7 @@ git submodule init
 git submodule update
 
 echo "start setup..."
+
 for f in .??*; do
     [ "$f" = ".git" ] && continue
     [ "$f" = ".gitignore" ] && continue
@@ -29,6 +30,14 @@ done
 #   cask upgrade
 #   cask install
 # fi
+
+cd ~/dotfiles_installer/.prezto/runcoms/
+
+for f in *; do
+    [ "$f" = "README.md" ] && continue
+
+    ln -s "$f" ~/."$f"
+done
 
 cat << END
 
