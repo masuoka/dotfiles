@@ -2,44 +2,41 @@
 
 set -u
 
-# 実行場所のディレクトリを取得
+# exec DIR
 THIS_DIR=$(cd $(dirname $0); pwd)
-
 cd $THIS_DIR
-git submodule init
-git submodule update
+
+# submodule update
+git submodule update --init --recursive
+git submodule foreach git pull origin master
+git submodule foreach git checkout master
 
 echo "start setup..."
-
+# dotfiles link
 for f in .??*; do
     [ "$f" = ".git" ] && continue
     [ "$f" = ".gitignore" ] && continue
-    # [ "$f" = ".gitconfig.local.template" ] && continue
-    # [ "$f" = ".require_oh-my-zsh" ] && continue
+#    [ "$f" = ".gitconfig.local.template" ] && continue
     [ "$f" = ".gitmodules" ] && continue
 
     ln -snfv ~/dotfiles/"$f" ~/
 done
 
-[ -e ~/.gitconfig.local ] || cp ~/dotfiles/.gitconfig.local.template ~/.gitconfig.local
+# [ -e ~/.gitconfig.local ] || cp ~/dotfiles/.gitconfig.local.template ~/.gitconfig.local
 
-# emacs set up
-# if which cask >/dev/null 2>&1; then
-#   echo "setup .emacs.d..."
-#   cd ${THIS_DIR}/.emacs.d
-#   cask upgrade
-#   cask install
-# fi
-
+# zprezto
 setopt EXTENDED_GLOB
-for rcfile in ~/dotfiles/.zprezto/runcoms/^README.md(.N); do
-    ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
+for rcfile in ${ZDOTDIR:-$HOME}/.zprezto/runcoms/??*; do
+    [ "$rcfile" = "^README.md" ] && continue
+    ln -snfv "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
 done
 
 cat << END
 
 **************************************************
-DOTFILES SETUP FINISHED! bye.
+DOTFILES SETUP FINISHED!
+CHANGE ITERM2 FONT POWERLINE
+RESTART SHELL.
 **************************************************
 
 END
